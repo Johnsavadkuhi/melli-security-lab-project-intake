@@ -1,5 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import { promises as fs } from 'node:fs'
 
 const draftFile = () => join(app.getPath('userData'), 'project-intake-draft.json')
@@ -9,9 +9,24 @@ if (typeof process.getuid === 'function' && process.getuid() === 0) app.commandL
 
 async function writeJsonAtomically(filePath: string, value: unknown) {
   const temporaryPath = `${filePath}.tmp-${process.pid}`
-  await fs.mkdir(join(filePath, '..'), { recursive: true })
-  await fs.writeFile(temporaryPath, JSON.stringify(value, null, 2), 'utf8')
-  await fs.rename(temporaryPath, filePath)
+  let moved = false
+  try {
+    await fs.mkdir(dirname(filePath), { recursive: true })
+    await fs.writeFile(temporaryPath, JSON.stringify(value, null, 2), 'utf8')
+    try {
+      await fs.rename(temporaryPath, filePath)
+    } catch (error) {
+      // Windows does not replace an existing file with rename(). Remove the
+      // old target only for that platform behavior, then complete the move.
+      const code = (error as NodeJS.ErrnoException).code
+      if (code !== 'EEXIST' && code !== 'EPERM') throw error
+      await fs.rm(filePath, { force: true })
+      await fs.rename(temporaryPath, filePath)
+    }
+    moved = true
+  } finally {
+    if (!moved) await fs.rm(temporaryPath, { force: true }).catch(() => undefined)
+  }
 }
 
 function safeFilePart(value: unknown) {
@@ -27,7 +42,7 @@ async function createWindow() {
     show: false,
     backgroundColor: '#f5f7fb',
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true
@@ -40,8 +55,13 @@ async function createWindow() {
 }
 
 ipcMain.handle('draft:save', async (_event, data) => {
-  await writeJsonAtomically(draftFile(), data)
-  return { ok: true }
+  try {
+    await writeJsonAtomically(draftFile(), data)
+    return { ok: true }
+  } catch (error) {
+    console.error('Unable to save draft', error)
+    return { ok: false, error: 'draft-save-failed' }
+  }
 })
 
 ipcMain.handle('draft:load', async () => {
@@ -50,15 +70,20 @@ ipcMain.handle('draft:load', async () => {
 })
 
 ipcMain.handle('export:json', async (_event, data) => {
-  const submissionId = (data as { submissionId?: unknown } | null)?.submissionId
-  const result = await dialog.showSaveDialog({
-    title: 'خروجی شناسنامه پروژه',
-    defaultPath: `${safeFilePart(submissionId)}.json`,
-    filters: [{ name: 'Project Passport JSON', extensions: ['json'] }]
-  })
-  if (result.canceled || !result.filePath) return { ok: false, canceled: true }
-  await writeJsonAtomically(result.filePath, data)
-  return { ok: true, path: result.filePath }
+  try {
+    const submissionId = (data as { submissionId?: unknown } | null)?.submissionId
+    const result = await dialog.showSaveDialog({
+      title: 'خروجی شناسنامه پروژه',
+      defaultPath: `${safeFilePart(submissionId)}.json`,
+      filters: [{ name: 'Project Passport JSON', extensions: ['json'] }]
+    })
+    if (result.canceled || !result.filePath) return { ok: false, canceled: true }
+    await writeJsonAtomically(result.filePath, data)
+    return { ok: true, path: result.filePath }
+  } catch (error) {
+    console.error('Unable to export JSON', error)
+    return { ok: false, error: 'json-export-failed' }
+  }
 })
 
 app.whenReady().then(() => {

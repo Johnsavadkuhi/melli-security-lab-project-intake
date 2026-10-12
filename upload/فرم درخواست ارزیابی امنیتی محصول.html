@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرم درخواست ارزیابی امنیتی محصول</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #f2f4f8;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      padding: 30px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .form-container {
+      max-width: 1100px;
+      width: 100%;
+      background: #fff;
+      padding: 30px 35px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #1e2b4a;
+    }
+    .sub-head {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #e6e9f0;
+      padding-bottom: 15px;
+    }
+    .section {
+      background: #f9fafc;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 24px;
+      border: 1px solid #e2e6ee;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0b2b4f;
+      margin-bottom: 18px;
+      border-right: 5px solid #1a6fb5;
+      padding-right: 12px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px 25px;
+      margin-bottom: 12px;
+    }
+    .col {
+      flex: 1 1 200px;
+      min-width: 170px;
+    }
+    .col-full {
+      flex: 1 1 100%;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      font-size: 13px;
+      color: #1e2b4a;
+      margin-bottom: 3px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccd2df;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      transition: 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #1a6fb5;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(26,111,181,0.15);
+    }
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    .inline-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 20px;
+      padding-top: 4px;
+    }
+    .inline-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .inline-group input[type="radio"],
+    .inline-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #1a6fb5;
+      cursor: pointer;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 10px 0 6px;
+    }
+    .table-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .table-wrap th {
+      background: #e6edf6;
+      padding: 10px 12px;
+      text-align: center;
+      font-weight: 600;
+      color: #0b2b4f;
+    }
+    .table-wrap td {
+      border: 1px solid #d6dce8;
+      padding: 8px 12px;
+      vertical-align: middle;
+    }
+    .table-wrap td input {
+      border: none;
+      background: transparent;
+      padding: 4px 6px;
+      width: 100%;
+      font-size: 14px;
+    }
+    .table-wrap td input:focus {
+      background: #fff;
+      border: 1px solid #1a6fb5;
+      border-radius: 6px;
+      box-shadow: 0 0 0 2px rgba(26,111,181,0.1);
+    }
+    .note-box {
+      background: #f0f4fb;
+      border-right: 4px solid #1a6fb5;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      color: #1a2a4a;
+    }
+    .signature-area {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 2px dashed #bcc4d4;
+    }
+    .signature-area .col {
+      flex: 1 1 200px;
+    }
+    .btn-submit {
+      background: #1a6fb5;
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      font-size: 18px;
+      border-radius: 40px;
+      cursor: pointer;
+font-weight: 600;
+      width: 100%;
+      transition: 0.25s;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+    }
+    .btn-submit:hover {
+      background: #135a94;
+      box-shadow: 0 4px 12px rgba(26,111,181,0.35);
+    }
+    .print-hint {
+      font-size: 13px;
+      color: #666;
+      text-align: left;
+      margin-top: 6px;
+    }
+    @media print {
+      .btn-submit { display: none; }
+      body { background: #fff; padding: 10px; }
+      .form-container { box-shadow: none; padding: 15px; }
+      .section { background: #fff; border: 1px solid #ccc; }
+    }
+    /* برای نمایش بهتر در موبایل */
+    @media (max-width: 600px) {
+      .form-container { padding: 16px; }
+      .section { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h1>فرم درخواست ارزیابی امنیتی محصول</h1>
+  <div class="sub-head">
+    <span>تاریخ تکمیل: <input type="date" style="width:auto;display:inline-block;padding:4px 10px;" value="1403-01-01"> &nbsp; | &nbsp; شماره پیگیری: <input type="text" style="width:auto;display:inline-block;padding:4px 10px;width:150px;" placeholder="اختیاری"></span>
+  </div>
+  <!-- ======================== ۱. اطلاعات تولیدکننده ======================== -->
+  <div class="section">
+    <div class="section-title">۱. اطلاعات تولیدکننده (مالک محصول)</div>
+    <div class="row">
+      <div class="col"><label>نام شرکت / واحد</label><input type="text" placeholder="نام شرکت"></div>
+      <div class="col"><label>نام مدیرعامل / مسئول</label><input type="text" placeholder="نام و نام خانوادگی"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>شماره ثبت</label><input type="text" placeholder="شماره ثبت"></div>
+      <div class="col"><label>شناسه ملی</label><input type="text" placeholder="شناسه ملی"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>کد اقتصادی</label><input type="text" placeholder="کد اقتصادی"></div>
+      <div class="col"><label>کدپستی</label><input type="text" placeholder="کدپستی"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>نوع شرکت</label>
+        <select><option>سهامی خاص</option><option>سهامی عام</option><option>با مسئولیت محدود</option><option>تعاونی</option><option>سایر</option></select>
+      </div>
+      <div class="col"><label>وب‌سایت</label><input type="url" placeholder="https://example.com"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>ایمیل</label><input type="email" placeholder="info@company.com"></div>
+      <div class="col"><label>تلفن ثابت</label><input type="tel" placeholder="۰۲۱-XXXX-XXXX"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>فکس</label><input type="tel" placeholder="۰۲۱-XXXX-XXXX"></div>
+      <div class="col"><label>شماره قرارداد با بانک ملی</label><input type="text" placeholder="شماره قرارداد"></div>
+    </div>
+    <div class="row">
+      <div class="col-full"><label>آدرس کامل</label><input type="text" placeholder="استان، شهر، خیابان، پلاک ..."></div>
+    </div>
+  </div>
+  <!-- ======================== ۲. نماینده (رابط فنی) ======================== -->
+  <div class="section">
+    <div class="section-title">۲. نماینده (رابط فنی) – جهت هماهنگی‌های ارزیابی</div>
+    <div class="row">
+      <div class="col"><label>نام و نام خانوادگی</label><input type="text" placeholder="نام نماینده"></div>
+      <div class="col"><label>تلفن همراه</label><input type="tel" placeholder="۰۹۱۲-XXX-XXXX"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>ایمیل</label><input type="email" placeholder="rep@company.com"></div>
+      <div class="col"><label>تلفن ثابت</label><input type="tel" placeholder="۰۲۱-XXXX-XXXX"></div>
+    </div>
+  </div>
+  <!-- ======================== ۳. شناسه محصول ======================== -->
+  <div class="section">
+    <div class="section-title">۳. شناسه محصول</div>
+    <div class="row">
+      <div class="col"><label>نام محصول (برند تجاری)</label><input type="text" placeholder="نام محصول"></div>
+      <div class="col"><label>مدل / شماره نسخه (ورژن)</label><input type="text" placeholder="v1.0.0"></div>
+    </div>
+    <div class
+="row">
+      <div class="col"><label>اداره متولی / بهره‌بردار</label><input type="text" placeholder="نام اداره"></div>
+      <div class="col"><label>هش MD5 فایل محصول</label><input type="text" placeholder="MD5 hash"></div>
+    </div>
+    <div class="row">
+      <div class="col-full"><label>دیتاسنتر مقصد برای نصب پس از تأیید</label><input type="text" placeholder="نام دیتاسنتر"></div>
+    </div>
+  </div>
+  <!-- ======================== ۴. شرح کلی محصول ======================== -->
+  <div class="section">
+    <div class="section-title">۴. شرح کلی محصول</div>
+    <div class="row">
+      <div class="col-full">
+        <label>توضیح مختصر عملکرد، کاربران هدف، معماری کلی</label>
+        <textarea rows="3" placeholder="شرح کامل محصول ..."></textarea>
+      </div>
+    </div>
+  </div>
+  <!-- ======================== ۵. دسته‌بندی و سوالات اثرگذار ======================== -->
+  <div class="section">
+    <div class="section-title">۵. دسته‌بندی محصول و سوالات اثرگذار بر زمان / هزینه</div>
+    <div class="row">
+      <div class="col-full"><label>دسته‌بندی محصول (لطفاً یک گزینه انتخاب کنید)</label></div>
+    </div>
+    <div class="inline-group">
+      <label><input type="radio" name="category"> تک‌کاره رومیزی (Desktop)</label>
+      <label><input type="radio" name="category"> ویندوزی تحت شبکه (Client/Server)</label>
+      <label><input type="radio" name="category"> سامانه تحت وب (Web‑Based)</label>
+      <label><input type="radio" name="category"> اپلیکیشن موبایل – اندروید</label>
+      <label><input type="radio" name="category"> اپلیکیشن موبایل – iOS</label>
+      <label><input type="radio" name="category"> سایر: <input type="text" style="width:120px;display:inline-block;padding:4px 8px;" placeholder="مشخص کنید"></label>
+    </div>
+    <div class="note-box">
+      <strong>⚠️ توجه:</strong> سامانه‌هایی که صرفاً به صورت <strong>API (Swagger)</strong> یا در محیط <strong>Stage</strong> ارائه می‌شوند، مشمول فرایند تست نفوذ کامل نخواهند شد. در این صورت، <strong>نسخه‌ی وب‌اپلیکیشن</strong> آن باید برای ارزیابی به آزمایشگاه ارسال گردد.
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-full"><label>سوالات تکمیلی:</label></div>
+    </div>
+    <div class="inline-group" style="flex-direction:column;align-items:stretch;gap:8px;">
+      <label><input type="radio" name="exp"> آیا شرکت شما سابقه‌ی ارزیابی امنیتی محصولات خود را دارد؟ &nbsp; <span style="font-weight:400;">□ بله &nbsp; □ خیر</span> (لطفاً انتخاب کنید)</label>
+      <label><input type="radio" name="prev"> آیا این محصول قبلاً مورد ارزیابی امنیتی قرار گرفته است؟ &nbsp; □ بله &nbsp; □ خیر</label>
+      <label style="margin-right:30px;"> در صورت بله، آیا آسیب‌پذیری‌ها رفع گردیده‌اند؟ □ بله □ خیر</label>
+      <label><input type="radio" name="consult"> آیا از شرکت/مشاور دیگری برای بهبود امنیت کمک گرفته‌اید؟ □ بله □ خیر &nbsp; (در صورت بله، نام: <input type="text" style="width:180px;display:inline-block;padding:4px 8px;" placeholder="نام مشاور">)</label>
+      <label><input type="radio" name="time"> آیا پس از دریافت نتایج آزمون، زمان و فرایند کافی برای رفع آسیب‌پذیری‌ها دارید؟ □ بله □ خیر</label>
+    </div>
+  </div>
+  <!-- ======================== ۶. الزامات فنی ارسال محصول ======================== -->
+  <div class="section">
+    <div class="section-title">۶. الزامات فنی ارسال محصول به آزمایشگاه</div>
+    <ol style="padding-right:20px;margin:6px 0 12px;line-height:2;">
+      <li><strong>داده‌های Mask شده:</strong> محصول باید حاوی داده‌های مخدوش (Mask) باشد تا امکان تست بدون افشای اطلاعات واقعی فراهم شود.</li>
+      <li><strong>فرمت OVF و هش MD5:</strong> آخرین نسخه‌ی محصول را به فرمت OVF به همراه هش MD5 ارسال کنید. 
+        <ul style="padding-right:25px;margin:4px 0;">
+          <li>فایل OVF باید روی <strong>هارد دیسک (بدون فایل‌های اضافی)</strong> تحویل شود.</li>
+          <li>نسخه‌ی ESXi پشتیبانی‌شده: <strong>۸ به بالا</strong>.</li>
+          <li><span style="color:#b22222;">⛔ فایل OVF بر روی فلش مموری پذیرفته نمی‌شود.</span></li>
+        </ul>
+      </li>
+      <li><strong>سرویس‌های مرتبط:</strong> تمام سرویس‌ها (دیتابیس، سرور برنامه و ...) باید به‌صور
+ت کامل نصب و راه‌اندازی شده باشند.</li>
+      <li><strong>بدون محدودیت:</strong> محصول باید <strong>فاقد هرگونه قفل سخت‌افزاری/نرم‌افزاری</strong> و همچنین <strong>بدون محدودیت بر اساس IP یا پورت</strong> باشد.</li>
+      <li><strong>حساب‌های کاربری تست:</strong> دو حساب با مشخصات زیر تعریف شود:
+        <div class="table-wrap" style="margin-top:8px;">
+          <table>
+            <thead><tr><th>نقش</th><th>نام کاربری</th><th>کلمه عبور</th></tr></thead>
+            <tbody>
+              <tr><td>مدیر (ادمین)</td><td><input type="text" value="admin-slb" readonly style="background:#f0f4fb;cursor:default;"></td><td><input type="password" value="S!8@2229!@2229" readonly style="background:#f0f4fb;cursor:default;"></td></tr>
+              <tr><td>کاربر محدود</td><td><input type="text" value="user-slb" readonly style="background:#f0f4fb;cursor:default;"></td><td><input type="password" value="S!81@2229!@2229" readonly style="background:#f0f4fb;cursor:default;"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+      <li><strong>رمزهای دسترسی سرور:</strong> جهت تنظیمات (تغییر IP، IIS، و غیره)، رمزهای زیر را وارد کنید:
+        <div class="row" style="margin-top:6px;">
+          <div class="col"><label>سرور Linux – رمز root</label><input type="password" placeholder="********"></div>
+          <div class="col"><label>سرور Linux – رمز oracle</label><input type="password" placeholder="********"></div>
+          <div class="col"><label>سرور Windows – رمز Administrator</label><input type="password" placeholder="********"></div>
+        </div>
+      </li>
+      <li><strong>دسترس‌پذیری شبکه:</strong> محصول باید در <strong>بسترهای شبکه‌ی متفاوت</strong> بدون محدودیت قابل دسترس باشد.</li>
+    </ol>
+  </div>
+  <!-- ======================== ۷. توضیحات فنی تکمیلی ======================== -->
+  <div class="section">
+    <div class="section-title">۷. توضیحات فنی تکمیلی (می‌توانید به‌عنوان پیوست ارائه دهید)</div>
+    <div class="row">
+      <div class="col-full">
+        <label>لطفاً موارد زیر را تشریح کنید:</label>
+        <ul style="padding-right:20px;margin:4px 0 8px;">
+          <li>شرح مختصر عملکرد محصول و سناریوهای استفاده</li>
+          <li>زبان‌های برنامه‌نویسی به‌کاررفته</li>
+          <li>تعداد تقریبی جداول، منوها، فرم‌ها، گزارشات و شمای کلی دیتابیس</li>
+          <li>در صورت استفاده از <strong>نرم‌افزارهای متن‌باز (Open Source)</strong>، ابزارهای جانبی یا کامپوننت‌های خاص، نام و نسخه‌ی آنها را ذکر کنید.</li>
+        </ul>
+        <textarea rows="5" placeholder="توضیحات فنی تکمیلی ..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== ۷. فهرست APIهای محصول ======================== -->
+  <div class="section">
+    <div class="section-title">۷. فهرست APIهای محصول (API Inventory)</div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>در صورت وجود API، اطلاعات زیر را تکمیل نمایید:</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>نوع API</label>
+        <div class="inline-group">
+          <label><input type="checkbox"> REST</label>
+          <label><input type="checkbox"> SOAP</label>
+          <label><input type="checkbox"> GraphQL</label>
+          <label><input type="checkbox"> gRPC</label>
+          <label>سایر: <input type="text" style="width:160px;display:inline-block;padding:4px 8px;"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>تعداد تقریبی API Endpointها</label>
+        <input type="text" placeholder="تعداد Endpointها">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>آیا مستندات API در اختیار ارزیاب قرار می‌گیرد؟</label>
+        <div class="inline-group">
+          <label><input type="radio" name="api-doc"> بله</label>
+          <label><input type="radio" name="api-doc"> خیر</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>نوع مستندات</label>
+        <div class="inline-group">
+          <label><input type="checkbox"> Swagger / OpenAPI</label>
+          <label><input type="checkbox"> Postman Collection</label>
+          <label><input type="checkbox"> WSDL</label>
+          <label><input type="checkbox"> مستندات اختصاصی</label>
+          <label>سایر: <input type="text" style="width:160px;display:inline-block;padding:4px 8px;"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>نسخه مستندات / تاریخ آخرین به‌روزرسانی</label>
+        <input type="text">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>آیا تمام API Endpointهای مستندسازی‌شده در Scope ارزیابی قرار دارند؟</label>
+        <div class="inline-group">
+          <label><input type="radio" name="api-scope"> بله</label>
+          <label><input type="radio" name="api-scope"> خیر</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-full">
+        <label>در صورت خیر، API Endpointهای خارج از Scope را مشخص نمایید:</label>
+        <textarea rows="3" placeholder="لیست Endpointهای خارج از Scope"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== ۸. گواهی‌ها و مستندات ======================== -->
+  <div class="section">
+    <div class="section-title">۸. گواهی‌ها و مستندات</div>
+    <div class="inline-group" style="flex-direction:column;align-items:stretch;gap:6px;">
+      <label><input type="checkbox"> کپی رنگی گواهی افتا (در صورت وجود) ضمیمه شود.</label>
+      <label><input type="checkbox"> مستندات راهنمای نصب و راه‌اندازی (مکتوب) ارسال گردد.</label>
+      <label><input type="checkbox"> مستندات آموزشی نحوه‌ی استفاده (مکتوب) ارسال گردد.</label>
+    </div>
+  </div>
+  <!-- ======================== ۹. کارشناس آموزش ======================== -->
+  <div class="section">
+    <div class="section-title">۹. کارشناس آموزش (حضور در آزمایشگاه جهت ارائه‌ی کسب‌وکار)</div>
+    <div class="row">
+      <div class="col"><label>نام کارشناس</label><input type="text" placeholder="نام و نام خانوادگی"></div>
+      <div class="col"><label>تلفن همراه</label><input type="tel" placeholder="۰۹۱۲-XXX-XXXX"></div>
+    </div>
+    <div class="row">
+      <div class="col"><label>ایمیل</label><input type="email" placeholder="trainer@company.com"></div>
+      <div class="col"><label>تلفن ثابت</label><input type="tel" placeholder="۰۲۱-XXXX-XXXX"></div>
+    </div>
+  </div>
+  <!-- ======================== ۱۰. تأیید نهایی ======================== -->
+  <div class="section">
+    <div class="section-title">۱۰. تأیید نهایی</div>
+    <div class="note-box" style="margin-bottom:14px;">
+      با امضای این فرم، صحت اطلاعات فوق را تأیید نمو
+ده و متعهد به رعایت کلیه‌ی الزامات ذکرشده می‌گردم.
+    </div>
+    <div class="signature-area">
+      <div class="col"><label>نام و امضای مسئول شرکت</label><input type="text" placeholder="نام و امضا"></div>
+      <div class="col"><label>تاریخ</label><input type="date" value="1403-01-01"></div>
+      <div class="col"><label>مهر شرکت (در صورت وجود)</label><input type="text" placeholder="مهر"></div>
+    </div>
+  </div>
+  <!-- ======================== دکمه ارسال (صرفاً جهت نمایش) ======================== -->
+  <button class="btn-submit" onclick="alert('فرم تکمیل شد. (این دکمه صرفاً جهت نمایش است)')">📨 ثبت و ارسال فرم</button>
+  <div class="print-hint">🖨️ برای چاپ، از گزینه‌ی Print مرورگر (Ctrl+P) استفاده کنید.</div>
+  <div style="margin-top:16px;font-size:13px;color:#666;border-top:1px solid #e0e4ec;padding-top:12px;">
+    <strong>یادآوری:</strong> هرگونه اطلاعات تکمیلی مانند کاتالوگ محصول، مستندات معماری، یا ارجاع به وب‌سایت مرجع که بتواند به برآورد دقیق‌تر زمان، هزینه و مسیر ارزیابی کمک کند، توصیه می‌شود ضمیمه گردد.
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+  "name": "melli-security-lab-project-intake",
+  "version": "0.2.0",
+  "description": "Offline Persian RTL project intake application for Melli Bank Security and Software Quality Laboratory",
+  "main": "./out/main/index.js",
+  "author": "Security & Quality Laboratory",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "package": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@fontsource/vazirmatn": "5.3.0",
+    "lucide-react": "1.55.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.89.0",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "typescript": "7.0.2",
+    "vite": "7.3.7"
+  },
+  "build": {
+    "appId": "ir.bankmelli.securitylab.intake",
+    "productName": "شناسنامه پروژه آزمایشگاه امنیت بانک ملی",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
+  }
+}

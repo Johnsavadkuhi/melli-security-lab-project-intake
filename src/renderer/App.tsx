@@ -29,12 +29,13 @@ function Welcome({ onStart, onResume, loading }: { onStart: () => void; onResume
         <div className="hero-assurance"><div><ShieldCheck size={18}/><span>ذخیره محلی و امن</span></div><div><ClipboardCheck size={18}/><span>اعتبارسنجی پیش از خروجی</span></div><div><FileJson size={18}/><span>خروجی استاندارد JSON</span></div></div>
       </div>
       <div className="institution-card">
-        <div className="institution-orbit orbit-a"/><div className="institution-orbit orbit-b"/>
-        <div className="logo-frame"><img src={logo} alt="لوگوی بانک ملی ایران"/></div>
-        <div className="institution-name">آزمایشگاه امنیت و کیفیت نرم‌افزار</div>
-        <div className="institution-owner">وابسته به بانک ملی ایران</div>
-        <div className="institution-rule"/><div className="institution-note">مرجع دریافت اطلاعات اولیه پروژه‌های ارزیابی امنیتی و کیفیت نرم‌افزار</div>
-        <div className="trust-row"><span><CheckCircle2 size={16}/> فارسی و راست‌چین</span><span><CheckCircle2 size={16}/> قابل استفاده بدون اینترنت</span></div>
+        <div className="logo-stage"><div className="logo-frame"><img src={logo} alt="لوگوی بانک ملی ایران"/></div></div>
+        <div className="institution-copy">
+          <div className="institution-name">آزمایشگاه امنیت و کیفیت نرم‌افزار</div>
+          <div className="institution-owner">وابسته به بانک ملی ایران</div>
+          <div className="institution-rule"/><div className="institution-note">مرجع دریافت اطلاعات اولیه پروژه‌های ارزیابی امنیتی و کیفیت نرم‌افزار</div>
+          <div className="trust-row"><span><CheckCircle2 size={16}/> فارسی و راست‌چین</span><span><CheckCircle2 size={16}/> قابل استفاده بدون اینترنت</span></div>
+        </div>
       </div>
     </section>
     <footer className="welcome-footer"><span>© آزمایشگاه امنیت و کیفیت نرم‌افزار بانک ملی ایران</span><span>این نسخه برای تکمیل و ارسال امن اطلاعات پروژه تهیه شده است.</span></footer>

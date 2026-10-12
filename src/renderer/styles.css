@@ -43,3 +43,72 @@
   .workspace-content { max-width: none !important; padding: 0 !important; }
   .form-section { break-inside: avoid; box-shadow: none !important; }
 }
+
+/* Keep the seal and its lettering in their own visual area. The source logo
+   is a tall image (334×491), so a short fixed frame clips the Persian text at
+   the bottom and makes the card copy look like it is sitting on the seal. */
+.institution-card {
+  min-height: 560px;
+  padding: 30px 26px 27px;
+  justify-content: flex-start;
+  gap: 0;
+}
+
+.logo-stage {
+  width: min(100%, 244px);
+  height: 335px;
+  flex: 0 0 335px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ffffff1c;
+  border-radius: 20px;
+  background: #071a342e;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-frame {
+  width: 218px;
+  height: 320px;
+  flex: 0 0 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-frame img {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.institution-copy {
+  width: 100%;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+  margin-top: 19px;
+}
+
+.institution-copy .institution-name,
+.institution-copy .institution-owner,
+.institution-copy .institution-rule,
+.institution-copy .institution-note,
+.institution-copy .trust-row {
+  position: static;
+}
+
+@media (max-width: 780px) {
+  .institution-card { min-height: 500px; padding: 22px 18px 24px; }
+  .logo-stage { height: 282px; flex-basis: 282px; }
+  .logo-frame { width: 184px; height: 268px; flex-basis: 268px; }
+}
+
+@media (max-width: 500px) {
+  .institution-card { min-height: 470px; }
+  .logo-stage { height: 256px; flex-basis: 256px; }
+  .logo-frame { width: 166px; height: 242px; flex-basis: 242px; }
+}

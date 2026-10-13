@@ -33,12 +33,13 @@ function Welcome({ onStart, onResume, loading }: { onStart: () => void; onResume
         <div className="institution-copy">
           <div className="institution-name">آزمایشگاه امنیت و کیفیت نرم‌افزار</div>
           <div className="institution-owner">وابسته به بانک ملی ایران</div>
-          <div className="institution-rule"/><div className="institution-note">مرجع دریافت اطلاعات اولیه پروژه‌های ارزیابی امنیتی و کیفیت نرم‌افزار</div>
-          <div className="trust-row"><span><CheckCircle2 size={16}/> فارسی و راست‌چین</span><span><CheckCircle2 size={16}/> قابل استفاده بدون اینترنت</span></div>
         </div>
       </div>
     </section>
-    <footer className="welcome-footer"><span>© آزمایشگاه امنیت و کیفیت نرم‌افزار بانک ملی ایران</span><span>این نسخه برای تکمیل و ارسال امن اطلاعات پروژه تهیه شده است.</span></footer>
+  
+    <footer className="welcome-footer"><span>© آزمایشگاه امنیت و کیفیت نرم‌افزار بانک ملی ایران</span>
+
+    </footer>
   </main>
 }
 

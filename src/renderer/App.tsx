@@ -6,6 +6,9 @@ import {
   Landmark, LockKeyhole, Menu, RotateCcw, Save, ShieldCheck, Sparkles,
   X
 } from 'lucide-react'
+import DatePicker from 'react-multi-date-picker'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
 import logo from './assets/melli-bank-logo.png'
 
 import { buildPackage, completionPercent, createInitialData, getAtPath, restoreDraft, setAtPath, validateForm } from './intake'
@@ -41,6 +44,30 @@ function Welcome({ onStart, onResume, loading }: { onStart: () => void; onResume
 
     </footer>
   </main>
+}
+
+function PersianDatePicker({ path, label, value, onChange }: { path: string; label: string; value: string; onChange: (value: string) => void }) {
+  return <label className="field persian-date-field" data-field={path}>
+    <span>{label}</span>
+    <DatePicker
+      value={value || undefined}
+      calendar={persian}
+      locale={persian_fa}
+      format="YYYY/MM/DD"
+      calendarPosition="bottom-start"
+      inputClass="melli-date-input"
+      containerClassName="melli-date-picker"
+      inputMode="none"
+      editable={false}
+      onChange={(date: any) => {
+        if (!date) return
+        const year = String(date.year).padStart(4, '0')
+        const month = String(date.month.number).padStart(2, '0')
+        const day = String(date.day).padStart(2, '0')
+        onChange(`${year}-${month}-${day}`)
+      }}
+    />
+  </label>
 }
 
 function Field({ path, label, value, onChange, placeholder, type = 'text', required = false, wide = false, readOnly = false }: { path?: string; label: string; value: any; onChange: (value: string) => void; placeholder?: string; type?: string; required?: boolean; wide?: boolean; readOnly?: boolean }) {
@@ -221,7 +248,7 @@ function App() {
         {showValidation && issues.length > 0 && <div className="validation-panel" role="alert"><strong>برای دریافت خروجی، موارد زیر را اصلاح کنید:</strong><ul>{issues.map(issue => <li key={issue.path}><button onClick={() => { setActiveStep(issue.step); window.setTimeout(() => document.querySelector<HTMLElement>(`[data-field="${issue.path}"] input`)?.focus(), 0) }}>{issue.label} — {steps[issue.step]}</button></li>)}</ul></div>}
         {activeStep === 0 && <>
           <Section number="۱" title="اطلاعات تولیدکننده (مالک محصول)" icon={<Building2 size={22}/> }><div className="field-grid"><Field label="نام شرکت / واحد" required path="manufacturer.companyName" value={value('manufacturer.companyName')} onChange={v => update('manufacturer.companyName', v)} placeholder="نام شرکت"/><Field label="نام مدیرعامل / مسئول" required path="manufacturer.responsiblePerson" value={value('manufacturer.responsiblePerson')} onChange={v => update('manufacturer.responsiblePerson', v)} placeholder="نام و نام خانوادگی"/><Field label="شماره ثبت" value={value('manufacturer.registrationNumber')} onChange={v => update('manufacturer.registrationNumber', v)} placeholder="شماره ثبت"/><Field label="شناسه ملی" value={value('manufacturer.nationalId')} onChange={v => update('manufacturer.nationalId', v)} placeholder="شناسه ملی"/><Field label="کد اقتصادی" value={value('manufacturer.economicCode')} onChange={v => update('manufacturer.economicCode', v)} placeholder="کد اقتصادی"/><Field label="کدپستی" value={value('manufacturer.postalCode')} onChange={v => update('manufacturer.postalCode', v)} placeholder="کدپستی"/><SelectField label="نوع شرکت" value={value('manufacturer.companyType')} onChange={v => update('manufacturer.companyType', v)} options={['سهامی خاص', 'سهامی عام', 'با مسئولیت محدود', 'تعاونی', 'سایر']}/><Field label="وب‌سایت" type="url" value={value('manufacturer.website')} onChange={v => update('manufacturer.website', v)} placeholder="https://example.com"/><Field label="ایمیل" type="email" path="manufacturer.email" value={value('manufacturer.email')} onChange={v => update('manufacturer.email', v)} placeholder="info@company.com"/><Field label="تلفن ثابت" type="tel" value={value('manufacturer.landline')} onChange={v => update('manufacturer.landline', v)} placeholder="۰۲۱-XXXX-XXXX"/><Field label="فکس" type="tel" value={value('manufacturer.fax')} onChange={v => update('manufacturer.fax', v)} placeholder="۰۲۱-XXXX-XXXX"/><Field label="شماره قرارداد با بانک ملی" value={value('manufacturer.melliBankContractNumber')} onChange={v => update('manufacturer.melliBankContractNumber', v)} placeholder="شماره قرارداد"/><Field label="آدرس کامل" wide value={value('manufacturer.address')} onChange={v => update('manufacturer.address', v)} placeholder="استان، شهر، خیابان، پلاک ..."/></div></Section>
-          <Section number="متادیتا" title="مشخصات ثبت درخواست" icon={<ClipboardCheck size={22}/> }><div className="field-grid"><Field label="تاریخ تکمیل" type="date" value={value('metadata.completionDate')} onChange={v => update('metadata.completionDate', v)}/><Field label="شماره پیگیری (اختیاری)" value={value('metadata.trackingNumber')} onChange={v => update('metadata.trackingNumber', v)} placeholder="شماره داخلی مشتری"/></div></Section>
+          <Section number="متادیتا" title="مشخصات ثبت درخواست" icon={<ClipboardCheck size={22}/> }><div className="field-grid"><PersianDatePicker path="metadata.completionDate" label="تاریخ تکمیل (هجری شمسی)" value={value('metadata.completionDate')} onChange={v => update('metadata.completionDate', v)}/><Field label="شماره پیگیری (اختیاری)" value={value('metadata.trackingNumber')} onChange={v => update('metadata.trackingNumber', v)} placeholder="شماره داخلی مشتری"/></div></Section>
         </>}
         {activeStep === 1 && <>
           <Section number="۲" title="نماینده (رابط فنی)" icon={<CircleHelp size={22}/> }><div className="field-grid"><Field label="نام و نام خانوادگی" required path="technicalRepresentative.fullName" value={value('technicalRepresentative.fullName')} onChange={v => update('technicalRepresentative.fullName', v)} placeholder="نام نماینده"/><Field label="تلفن همراه" required type="tel" path="technicalRepresentative.mobile" value={value('technicalRepresentative.mobile')} onChange={v => update('technicalRepresentative.mobile', v)} placeholder="۰۹۱۲-XXX-XXXX"/><Field label="ایمیل" type="email" path="technicalRepresentative.email" value={value('technicalRepresentative.email')} onChange={v => update('technicalRepresentative.email', v)} placeholder="rep@company.com"/><Field label="تلفن ثابت" type="tel" value={value('technicalRepresentative.landline')} onChange={v => update('technicalRepresentative.landline', v)} placeholder="۰۲۱-XXXX-XXXX"/></div></Section>
@@ -238,7 +265,7 @@ function App() {
           <Section number="۹" title="کارشناس آموزش" icon={<CircleHelp size={22}/> }><div className="field-grid"><Field label="نام کارشناس" value={value('trainer.fullName')} onChange={v => update('trainer.fullName', v)} placeholder="نام و نام خانوادگی"/><Field label="تلفن همراه" type="tel" value={value('trainer.mobile')} onChange={v => update('trainer.mobile', v)} placeholder="۰۹۱۲-XXX-XXXX"/><Field label="ایمیل" type="email" path="trainer.email" value={value('trainer.email')} onChange={v => update('trainer.email', v)} placeholder="trainer@company.com"/><Field label="تلفن ثابت" type="tel" value={value('trainer.landline')} onChange={v => update('trainer.landline', v)} placeholder="۰۲۱-XXXX-XXXX"/></div></Section>
         </>}
         {activeStep === 5 && <>
-          <Section number="۱۰" title="بازبینی و تأیید نهایی" icon={<CheckCircle2 size={22}/> }><div className="notice-box success"><CheckCircle2 size={19}/><p>با امضای این فرم، صحت اطلاعات فوق را تأیید نموده و متعهد به رعایت کلیه الزامات ذکرشده می‌گردم.</p></div><div className="field-grid"><Field label="نام و امضای مسئول شرکت" required path="finalApproval.signerName" value={value('finalApproval.signerName')} onChange={v => update('finalApproval.signerName', v)} placeholder="نام و امضا"/><Field label="تاریخ" type="date" value={value('finalApproval.date')} onChange={v => update('finalApproval.date', v)}/><Field label="مهر شرکت (در صورت وجود)" value={value('finalApproval.companySeal')} onChange={v => update('finalApproval.companySeal', v)} placeholder="مهر"/></div></Section>
+          <Section number="۱۰" title="بازبینی و تأیید نهایی" icon={<CheckCircle2 size={22}/> }><div className="notice-box success"><CheckCircle2 size={19}/><p>با امضای این فرم، صحت اطلاعات فوق را تأیید نموده و متعهد به رعایت کلیه الزامات ذکرشده می‌گردم.</p></div><div className="field-grid"><Field label="نام و امضای مسئول شرکت" required path="finalApproval.signerName" value={value('finalApproval.signerName')} onChange={v => update('finalApproval.signerName', v)} placeholder="نام و امضا"/><PersianDatePicker path="finalApproval.date" label="تاریخ تأیید نهایی (هجری شمسی)" value={value('finalApproval.date')} onChange={v => update('finalApproval.date', v)}/><Field label="مهر شرکت (در صورت وجود)" value={value('finalApproval.companySeal')} onChange={v => update('finalApproval.companySeal', v)} placeholder="مهر"/></div></Section>
           <div className="final-card"><div className="final-icon"><FileJson size={26}/></div><div><h3>فرم آماده خروجی است؟</h3><p>پس از بازبینی اطلاعات، فایل استاندارد JSON را ذخیره کنید و برای آزمایشگاه ارسال نمایید.</p></div><button className="primary-cta compact" disabled={exporting} onClick={() => void exportJson()}><FileJson size={18}/> دریافت خروجی JSON</button></div>
         </>}
         <div className="form-footer-actions"><button className="nav-button secondary" disabled={activeStep === 0} onClick={() => setActiveStep(step => Math.max(0, step - 1))}><ArrowRight size={17}/> مرحله قبل</button><div className="footer-hint"><Save size={15}/> {saveLabels[saveStatus]}</div>{activeStep < steps.length - 1 ? <button className="nav-button primary" onClick={() => setActiveStep(step => Math.min(steps.length - 1, step + 1))}>مرحله بعد <ArrowLeft size={17}/></button> : <button className="nav-button primary" disabled={exporting} onClick={() => void exportJson()}><FileJson size={17}/> ثبت و دریافت JSON</button>}</div>

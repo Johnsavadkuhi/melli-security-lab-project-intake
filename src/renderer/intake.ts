@@ -138,6 +138,22 @@ export function restoreDraft(saved: unknown) {
 }
 
 export type ValidationIssue = { path: string; label: string; step: number }
+
+/**
+ * Product versions are numeric, dot-separated release identifiers.
+ *
+ * The leading `v` is part of the value shown in the form and at least the
+ * major/minor/patch components are required. Additional numeric components
+ * are allowed so versions such as `v1.0.0.1.2` remain valid.
+ */
+export function isValidProductVersion(value: unknown): value is string {
+  if (typeof value !== 'string') return false
+  const normalized = value.trim()
+    .replace(/[۰-۹]/g, (digit: string) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+    .replace(/[٠-٩]/g, (digit: string) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+  return /^v\d+(?:\.\d+){2,}$/i.test(normalized)
+}
+
 export const requiredFields: ValidationIssue[] = [
   { path: 'manufacturer.companyName', label: 'نام شرکت / واحد', step: 0 },
   { path: 'manufacturer.responsiblePerson', label: 'نام مدیرعامل / مسئول', step: 0 },
@@ -164,6 +180,10 @@ export function validateForm(data: AnyRecord): ValidationIssue[] {
   }
   const md5 = data.product.md5Hash.trim()
   if (md5 && !/^[a-fA-F0-9]{32}$/.test(md5)) issues.push({ path: 'product.md5Hash', label: 'هش MD5 باید ۳۲ رقم هگزادسیمال باشد', step: 1 })
+  const version = String(getAtPath(data, 'product.version') ?? '').trim()
+  if (version && !isValidProductVersion(version)) {
+    issues.push({ path: 'product.version', label: 'نسخه محصول باید مانند v1.0.0 باشد و فقط بخش‌های عددی جداشده با نقطه داشته باشد', step: 1 })
+  }
   const count = data.apiInventory.endpointCount.trim().replace(/[۰-۹]/g, (d: string) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g, (d: string) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
   if (count && !/^\d+$/.test(count)) issues.push({ path: 'apiInventory.endpointCount', label: 'تعداد Endpointها باید عدد صحیح و نامنفی باشد', step: 4 })
   for (const [path, label, step] of [

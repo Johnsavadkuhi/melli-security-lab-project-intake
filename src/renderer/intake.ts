@@ -1,3 +1,5 @@
+import { restoreFormValues, standardizeForDatabase } from './data-contract'
+
 export type JalaliDate = { year: number; month: number; day: number }
 
 function toJalali(year: number, month: number, day: number): JalaliDate {
@@ -130,7 +132,9 @@ export function restoreDraft(saved: unknown) {
   // Accept legacy raw drafts and previously exported JSON packages.
   const payload = source.payload && typeof source.payload === 'object' ? source.payload : source
   if (!payload.manufacturer || typeof payload.manufacturer !== 'object' || Array.isArray(payload.manufacturer)) throw new Error('invalid-draft')
-  const restored = mergeDefaults(initialData, payload)
+  // Exported packages use database codes; convert them back to UI labels before
+  // merging so both legacy drafts and exported packages can be reopened.
+  const restored = mergeDefaults(initialData, restoreFormValues(clone(payload)))
   restored.metadata.completionDate = normalizeDate(restored.metadata.completionDate) || localDate()
   restored.finalApproval.date = normalizeDate(restored.finalApproval.date) || localDate()
   restored.metadata.submissionId ||= typeof source.submissionId === 'string' && source.submissionId ? source.submissionId : restored.metadata.trackingNumber || newSubmissionId()
@@ -204,6 +208,7 @@ export function completionPercent(data: AnyRecord) {
 
 export function buildPackage(data: AnyRecord, now = new Date()) {
   const payload = clone(data)
+  standardizeForDatabase(payload)
   // Normalize optional validation fields without changing passwords or other text.
   for (const path of ['manufacturer.email', 'technicalRepresentative.email', 'trainer.email', 'product.md5Hash']) {
     const parts = path.split('.')
